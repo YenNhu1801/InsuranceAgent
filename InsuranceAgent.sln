@@ -79,6 +79,104 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DashboardService", "Dashboa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashboardService.Api", "src\DashboardService\DashboardService.Api\DashboardService.Api.csproj", "{22E30C36-17FC-498D-B1D2-55BDE1853093}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eureka-server", "eureka-server", "{80486C42-2705-43DE-8750-83BE47F08827}"
+	ProjectSection(SolutionItems) = preProject
+		eureka-server\eureka-server\build.gradle = eureka-server\eureka-server\build.gradle
+		eureka-server\eureka-server\Dockerfile = eureka-server\eureka-server\Dockerfile
+		eureka-server\eureka-server\gradlew = eureka-server\eureka-server\gradlew
+		eureka-server\eureka-server\gradlew.bat = eureka-server\eureka-server\gradlew.bat
+		eureka-server\eureka-server\gradle\wrapper\gradle-wrapper.jar = eureka-server\eureka-server\gradle\wrapper\gradle-wrapper.jar
+		eureka-server\eureka-server\gradle\wrapper\gradle-wrapper.properties = eureka-server\eureka-server\gradle\wrapper\gradle-wrapper.properties
+		eureka-server\eureka-server\src\main\java\net\chrisrichardson\microservices\eurekaserver\EurekaServer.java = eureka-server\eureka-server\src\main\java\net\chrisrichardson\microservices\eurekaserver\EurekaServer.java
+		eureka-server\eureka-server\src\main\resources\application.yml = eureka-server\eureka-server\src\main\resources\application.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "postgres", "postgres", "{01562ECC-6475-42F4-9C49-17CB28A573EB}"
+	ProjectSection(SolutionItems) = preProject
+		postgres\postgres\createdatabases.sql = postgres\postgres\createdatabases.sql
+		postgres\postgres\Dockerfile = postgres\postgres\Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{EC19C8F9-0611-4DD6-86D1-A5AC53D75AB9}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\scripts\app-build.sh = scripts\scripts\app-build.sh
+		scripts\scripts\app-down.sh = scripts\scripts\app-down.sh
+		scripts\scripts\app-logs.sh = scripts\scripts\app-logs.sh
+		scripts\scripts\app-run.sh = scripts\scripts\app-run.sh
+		scripts\scripts\app.yml = scripts\scripts\app.yml
+		scripts\scripts\build-without-tests.bat = scripts\scripts\build-without-tests.bat
+		scripts\scripts\build-without-tests.sh = scripts\scripts\build-without-tests.sh
+		scripts\scripts\build.bat = scripts\scripts\build.bat
+		scripts\scripts\build.sh = scripts\scripts\build.sh
+		scripts\scripts\infra-build.sh = scripts\scripts\infra-build.sh
+		scripts\scripts\infra-down.sh = scripts\scripts\infra-down.sh
+		scripts\scripts\infra-logs.sh = scripts\scripts\infra-logs.sh
+		scripts\scripts\infra-run.sh = scripts\scripts\infra-run.sh
+		scripts\scripts\infra.yml = scripts\scripts\infra.yml
+		scripts\scripts\rabbitmq-isolated.conf = scripts\scripts\rabbitmq-isolated.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{1E8665E2-8847-4695-8FFD-D00C0C5D33D7}"
+	ProjectSection(SolutionItems) = preProject
+		Web\Web\.dockerignore = Web\Web\.dockerignore
+		Web\Web\.env-example = Web\Web\.env-example
+		Web\Web\.gitignore = Web\Web\.gitignore
+		Web\Web\babel.config.js = Web\Web\babel.config.js
+		Web\Web\Dockerfile = Web\Web\Dockerfile
+		Web\Web\nginx.conf = Web\Web\nginx.conf
+		Web\Web\package-lock.json = Web\Web\package-lock.json
+		Web\Web\package.json = Web\Web\package.json
+		Web\Web\README.md = Web\Web\README.md
+		Web\Web\yarn.lock = Web\Web\yarn.lock
+		Web\Web\public\favicon.ico = Web\Web\public\favicon.ico
+		Web\Web\public\index.html = Web\Web\public\index.html
+		Web\Web\public\static\car.jpg = Web\Web\public\static\car.jpg
+		Web\Web\public\static\farm.jpg = Web\Web\public\static\farm.jpg
+		Web\Web\public\static\house.jpg = Web\Web\public\static\house.jpg
+		Web\Web\public\static\travel.jpg = Web\Web\public\static\travel.jpg
+		Web\Web\public\static\avatars\admin.png = Web\Web\public\static\avatars\admin.png
+		Web\Web\public\static\avatars\agent1.png = Web\Web\public\static\avatars\agent1.png
+		Web\Web\public\static\avatars\danny_solid.png = Web\Web\public\static\avatars\danny_solid.png
+		Web\Web\public\static\avatars\jimmy_solid.png = Web\Web\public\static\avatars\jimmy_solid.png
+		Web\Web\src\App.vue = Web\Web\src\App.vue
+		Web\Web\src\main.js = Web\Web\src\main.js
+		Web\Web\src\router.js = Web\Web\src\router.js
+		Web\Web\src\assets\logo.png = Web\Web\src\assets\logo.png
+		Web\Web\src\assets\logo_horizontal.png = Web\Web\src\assets\logo_horizontal.png
+		Web\Web\src\components\Account.vue = Web\Web\src\components\Account.vue
+		Web\Web\src\components\Chat.vue = Web\Web\src\components\Chat.vue
+		Web\Web\src\components\Chatbot.vue = Web\Web\src\components\Chatbot.vue
+		Web\Web\src\components\CoverList.vue = Web\Web\src\components\CoverList.vue
+		Web\Web\src\components\Dashboard.vue = Web\Web\src\components\Dashboard.vue
+		Web\Web\src\components\Home.vue = Web\Web\src\components\Home.vue
+		Web\Web\src\components\PolicyCreate.vue = Web\Web\src\components\PolicyCreate.vue
+		Web\Web\src\components\PolicyDetails.vue = Web\Web\src\components\PolicyDetails.vue
+		Web\Web\src\components\PolicyList.vue = Web\Web\src\components\PolicyList.vue
+		Web\Web\src\components\ProductCard.vue = Web\Web\src\components\ProductCard.vue
+		Web\Web\src\components\ProductDetails.vue = Web\Web\src\components\ProductDetails.vue
+		Web\Web\src\components\ProductList.vue = Web\Web\src\components\ProductList.vue
+		Web\Web\src\components\SalesAgents.vue = Web\Web\src\components\SalesAgents.vue
+		Web\Web\src\components\SalesBar.js = Web\Web\src\components\SalesBar.js
+		Web\Web\src\components\SalesDistribution.vue = Web\Web\src\components\SalesDistribution.vue
+		Web\Web\src\components\SalesLines.js = Web\Web\src\components\SalesLines.js
+		Web\Web\src\components\SalesPie.js = Web\Web\src\components\SalesPie.js
+		Web\Web\src\components\SalesTrendsLines.vue = Web\Web\src\components\SalesTrendsLines.vue
+		Web\Web\src\components\TotalSalesCard.vue = Web\Web\src\components\TotalSalesCard.vue
+		Web\Web\src\components\http\ApiClient.js = Web\Web\src\components\http\ApiClient.js
+		Web\Web\src\components\http\Auth.js = Web\Web\src\components\http\Auth.js
+		Web\Web\src\components\http\WebSocket.js = Web\Web\src\components\http\WebSocket.js
+		Web\Web\src\views\AccountView.vue = Web\Web\src\views\AccountView.vue
+		Web\Web\src\views\ChatbotView.vue = Web\Web\src\views\ChatbotView.vue
+		Web\Web\src\views\ChatView.vue = Web\Web\src\views\ChatView.vue
+		Web\Web\src\views\DashboardView.vue = Web\Web\src\views\DashboardView.vue
+		Web\Web\src\views\HomeView.vue = Web\Web\src\views\HomeView.vue
+		Web\Web\src\views\PoliciesView.vue = Web\Web\src\views\PoliciesView.vue
+		Web\Web\src\views\PolicyCreateView.vue = Web\Web\src\views\PolicyCreateView.vue
+		Web\Web\src\views\PolicyDetailsView.vue = Web\Web\src\views\PolicyDetailsView.vue
+		Web\Web\src\views\ProductDetailsView.vue = Web\Web\src\views\ProductDetailsView.vue
+		Web\Web\src\views\ProductsView.vue = Web\Web\src\views\ProductsView.vue
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
