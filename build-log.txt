@@ -1,40 +1,27 @@
-  Determining projects to restore...
-  Restored /workspace/InsuranceAgent/src/PaymentService/PaymentService.Test/PaymentService.Test.csproj (in 379 ms).
-  Restored /workspace/InsuranceAgent/src/PricingService/PricingService.Test/PricingService.Test.csproj (in 380 ms).
-  Restored /workspace/InsuranceAgent/src/PolicyService/PolicyService.Test/PolicyService.Test.csproj (in 426 ms).
-  Restored /workspace/InsuranceAgent/src/DocumentService/DocumentService.Test/DocumentService.Test.csproj (in 426 ms).
-  Restored /workspace/InsuranceAgent/src/ProductService/ProductService.Test/ProductService.Test.csproj (in 426 ms).
-  Restored /workspace/InsuranceAgent/src/ChatService/ChatService.Test/ChatService.Test.csproj (in 380 ms).
-  Restored /workspace/InsuranceAgent/src/AuthService/AuthService.Test/AuthService.Test.csproj (in 381 ms).
-  Restored /workspace/InsuranceAgent/src/PolicySearchService/PolicySearchService.Test/PolicySearchService.Test.csproj (in 380 ms).
-  16 of 24 projects are up-to-date for restore.
-  ProductService.Api -> /workspace/InsuranceAgent/src/ProductService/ProductService.Api/bin/Debug/net8.0/ProductService.Api.dll
-  PricingService.Api -> /workspace/InsuranceAgent/src/PricingService/PricingService.Api/bin/Debug/net8.0/PricingService.Api.dll
-  PolicySearchService.Api -> /workspace/InsuranceAgent/src/PolicySearchService/PolicySearchService.Api/bin/Debug/net8.0/PolicySearchService.Api.dll
-  DocumentService.Api -> /workspace/InsuranceAgent/src/DocumentService/DocumentService.Api/bin/Debug/net8.0/DocumentService.Api.dll
-  ChatService.Api -> /workspace/InsuranceAgent/src/ChatService/ChatService.Api/bin/Debug/net8.0/ChatService.Api.dll
-  AuthService.Api -> /workspace/InsuranceAgent/src/AuthService/AuthService.Api/bin/Debug/net8.0/AuthService.Api.dll
-  PolicyService.Api -> /workspace/InsuranceAgent/src/PolicyService/PolicyService.Api/bin/Debug/net8.0/PolicyService.Api.dll
-  PaymentService.Api -> /workspace/InsuranceAgent/src/PaymentService/PaymentService.Api/bin/Debug/net8.0/PaymentService.Api.dll
-  PolicyService -> /workspace/InsuranceAgent/src/PolicyService/PolicyService/bin/Debug/net8.0/PolicyService.dll
-  ChatService -> /workspace/InsuranceAgent/src/ChatService/ChatService/bin/Debug/net8.0/ChatService.dll
-  AuthService -> /workspace/InsuranceAgent/src/AuthService/AuthService/bin/Debug/net8.0/AuthService.dll
-  AuthService.Test -> /workspace/InsuranceAgent/src/AuthService/AuthService.Test/bin/Debug/net8.0/AuthService.Test.dll
-  PolicyService.Test -> /workspace/InsuranceAgent/src/PolicyService/PolicyService.Test/bin/Debug/net8.0/PolicyService.Test.dll
-  ChatService.Test -> /workspace/InsuranceAgent/src/ChatService/ChatService.Test/bin/Debug/net8.0/ChatService.Test.dll
-  PolicySearchService -> /workspace/InsuranceAgent/src/PolicySearchService/PolicySearchService/bin/Debug/net8.0/PolicySearchService.dll
-  PaymentService -> /workspace/InsuranceAgent/src/PaymentService/PaymentService/bin/Debug/net8.0/PaymentService.dll
-  DocumentService -> /workspace/InsuranceAgent/src/DocumentService/DocumentService/bin/Debug/net8.0/DocumentService.dll
-  PricingService -> /workspace/InsuranceAgent/src/PricingService/PricingService/bin/Debug/net8.0/PricingService.dll
-  PaymentService.Test -> /workspace/InsuranceAgent/src/PaymentService/PaymentService.Test/bin/Debug/net8.0/PaymentService.Test.dll
-  PricingService.Test -> /workspace/InsuranceAgent/src/PricingService/PricingService.Test/bin/Debug/net8.0/PricingService.Test.dll
-  PolicySearchService.Test -> /workspace/InsuranceAgent/src/PolicySearchService/PolicySearchService.Test/bin/Debug/net8.0/PolicySearchService.Test.dll
-  ProductService -> /workspace/InsuranceAgent/src/ProductService/ProductService/bin/Debug/net8.0/ProductService.dll
-  ProductService.Test -> /workspace/InsuranceAgent/src/ProductService/ProductService.Test/bin/Debug/net8.0/ProductService.Test.dll
-  DocumentService.Test -> /workspace/InsuranceAgent/src/DocumentService/DocumentService.Test/bin/Debug/net8.0/DocumentService.Test.dll
+﻿C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rfx3-98h7-v3xp [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-vmw2-qwm8-x84c [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.8 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533 [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533 [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1901: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known low severity vulnerability, https://github.com/advisories/GHSA-vmcp-66r5-3pcp [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rfx3-98h7-v3xp
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-vmw2-qwm8-x84c
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.8 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1901: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known low severity vulnerability, https://github.com/advisories/GHSA-vmcp-66r5-3pcp
 
 Build succeeded.
-    0 Warning(s)
+
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rfx3-98h7-v3xp [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-vmw2-qwm8-x84c [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.8 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533 [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533 [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1901: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known low severity vulnerability, https://github.com/advisories/GHSA-vmcp-66r5-3pcp [C:\Users\LENOVO\Downloads\BTH4\InsuranceAgent.sln]
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rfx3-98h7-v3xp
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1904: Package 'Marten' 7.19.1 has a known critical severity vulnerability, https://github.com/advisories/GHSA-vmw2-qwm8-x84c
+C:\Users\LENOVO\Downloads\BTH4\src\PricingService\PricingService\PricingService.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.8 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1903: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-j8ph-6fxj-g533
+C:\Users\LENOVO\Downloads\BTH4\AgentPortalApiGateway\AgentPortalApiGateway\AgentPortalApiGateway.csproj : warning NU1901: Package 'Steeltoe.Discovery.Eureka' 3.2.7 has a known low severity vulnerability, https://github.com/advisories/GHSA-vmcp-66r5-3pcp
+    10 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:07.24
+Time Elapsed 00:00:06.05

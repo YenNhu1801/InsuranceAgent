@@ -177,6 +177,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{1E8665E2-884
 		Web\Web\src\views\ProductsView.vue = Web\Web\src\views\ProductsView.vue
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PricingService.IntegrationTest", "src\PricingService\PricingService.IntegrationTest\PricingService.IntegrationTest.csproj", "{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -511,6 +513,18 @@ Global
 		{22E30C36-17FC-498D-B1D2-55BDE1853093}.Release|x64.Build.0 = Release|Any CPU
 		{22E30C36-17FC-498D-B1D2-55BDE1853093}.Release|x86.ActiveCfg = Release|Any CPU
 		{22E30C36-17FC-498D-B1D2-55BDE1853093}.Release|x86.Build.0 = Release|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Release|x64.Build.0 = Release|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -543,5 +557,6 @@ Global
 		{F33FC710-A479-47D1-A9DA-EE18A4A63516} = {E7BDDBC6-9FD1-D1D7-ACD8-2C4F8E3D2461}
 		{CC3615C5-08E6-40B7-85CE-8A1AEE4F758C} = {2CB42F12-E813-91B3-7D11-3220E40BEF4A}
 		{22E30C36-17FC-498D-B1D2-55BDE1853093} = {19999652-DC8F-78C8-0D97-1B0AD949E4CE}
+		{C6879027-2FEE-4C44-B1AD-3FFD348F3AB8} = {22F462C6-BA12-4F9E-8354-9775616B0695}
 	EndGlobalSection
 EndGlobal
