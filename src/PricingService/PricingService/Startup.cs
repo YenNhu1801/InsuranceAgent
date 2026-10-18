@@ -1,4 +1,4 @@
-﻿using GlobalExceptionHandler.WebApi;
+using GlobalExceptionHandler.WebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -48,7 +48,7 @@ public class Startup
             app.UseSwaggerUI();
         }
 
-        app.UseInitializer();
+        app.UseInitializer().GetAwaiter().GetResult();
         app.UseDiscoveryClient();
         app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
