@@ -28,6 +28,7 @@ Hướng dẫn Windows, cổng, thứ tự terminal và hai chức năng (báo g
 - 2026-11-08 — Tích hợp PolicyService và PolicySearchService cho Lab 9, compose triển khai, sửa listener RabbitMQ đợi xử lý xong trước khi đóng scope, ổn định test hết hạn offer.
 - 2026-11-08 — Vue gọi Auth và gateway; Eureka đăng ký Pricing/Policy/Search; hướng dẫn chạy Windows. Đã bấm trên Vue: báo giá TRI 108 EUR, tạo hợp đồng, tìm thấy hợp đồng vừa tạo.
 - 2026-11-08 — Sửa Docker `COPY --from=build` cho Pricing, Policy, Policy Search. Compose thêm Auth, Product, Gateway, Vue. Cổng host của Pricing là 15040.
+- 2026-11-08 — Vue production build trên Node 22 tự thoát sau khi biên dịch: tắt Uglify worker-farm trong `vue.config.js`.
 
 ## Đẩy lên GitHub & thêm cộng tác viên
 ```

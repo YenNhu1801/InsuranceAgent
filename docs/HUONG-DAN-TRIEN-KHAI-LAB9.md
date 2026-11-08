@@ -223,6 +223,7 @@ Chưa chạy: Docker Compose, Chat, Dashboard, Payment (không tính xem số d�
 - Policy/Pricing không hiện trên Eureka nếu biến môi trường tắt đăng ký, hoặc bật service trước Eureka. Tắt biến đó, khởi động lại Eureka rồi các service, sau đó mới bật gateway.
 - Tạo báo giá lỗi kết nối Pricing: Eureka chưa có `PRICINGSERVICE`, hoặc Policy không fetch registry.
 - Vue `Cannot find module 'node-sass'`: dùng Node 22 với cấu hình hiện tại (`sass` + `sass-loader` 10), cài bằng `npm install --legacy-peer-deps`, và `NODE_OPTIONS=--openssl-legacy-provider`.
+- `npm run build` in `DONE Build complete` rồi Docker đứng ở `RUN`: Vue CLI 3 bật Uglify song song qua `worker-farm` khi máy có hơn 2 CPU. Trên Node 22 các process con không đóng, nên tiến trình không thoát và image không được xuất. `Web/Web/vue.config.js` tắt chế độ song song đó để minify chạy trong cùng process. Đã kiểm tra trên Node 22: `npm run build` tự thoát, mã 0, khoảng 6 giây, có `dist/index.html`. Không ép `exit 0`.
 - `npm install` báo conflict peer: thêm `--legacy-peer-deps`.
 - Gateway 404 với `/swagger` là bình thường. Nghiệp vụ là `/api/...`.
 - Tìm kiếm rỗng ngay sau khi tạo hợp đồng: đợi outbox (khoảng 1 giây) và bấm Tìm lại.
