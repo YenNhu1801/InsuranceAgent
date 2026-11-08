@@ -90,8 +90,10 @@ services:
     image: dotnet-pricing-service
     container_name: dotnet-pricing-service
     hostname: dotnet-pricing-service
+    # Trong container van lang nghe 5040 (Eureka/appsettings.docker). Host map mac dinh 15040
+    # tranh xung dot Windows CDPSvc (svchost) chiem 0.0.0.0:5040 — dat PRICING_HOST_PORT trong .env neu can.
     ports:
-      - "5040:5040"
+      - "${PRICING_HOST_PORT:-15040}:5040"
     depends_on:
       postgres:
         condition: service_healthy

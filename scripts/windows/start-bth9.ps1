@@ -9,6 +9,9 @@ docker version | Out-Host
 docker compose version | Out-Host
 dotnet --version | Out-Host
 
+if (-not (Test-Path (Join-Path $root ".env"))) {
+    Write-Host "Goi y: tao .env tu .env.example (PRICING_HOST_PORT=15040) — tranh xung dot Windows CDPSvc port 5040."
+}
 Write-Host "Build va khoi dong Compose (lan dau co the mat nhieu phut)..."
 docker compose up -d --build
 
@@ -29,6 +32,7 @@ if (-not $ready) {
 Write-Host ""
 Write-Host "UI:      http://localhost:5081"
 Write-Host "Gateway: http://localhost:8099"
+Write-Host "Pricing (debug host): http://localhost:15040  (noi bo container :5040)"
 Write-Host "Eureka:  http://localhost:8761"
 Write-Host "Dang nhap: jimmy.solid / secret"
 Write-Host "Smoke API: bash scripts/bth9-smoke.sh   (hoac Git Bash / WSL)"

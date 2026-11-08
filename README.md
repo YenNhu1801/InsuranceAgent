@@ -30,7 +30,7 @@ Windows: `powershell -File scripts/windows/start-bth9.ps1`
 | API Gateway | http://localhost:8099 |
 | Auth | http://localhost:6060 |
 | Product | http://localhost:5030 |
-| Pricing | http://localhost:5040 |
+| Pricing (host, Compose) | http://localhost:15040 — trong container vẫn `:5040`; đổi bằng `PRICING_HOST_PORT` (xem `.env.example`, tránh `5040` trên Windows vì CDPSvc) |
 | Policy | http://localhost:5050 |
 | Policy search | http://localhost:5065 |
 | Chat | http://localhost:4099 |
@@ -56,6 +56,7 @@ docker compose up -d postgres rabbit elasticsearch eureka-server
 Không có secret bắt buộc ngoài cấu hình lab trong `appsettings*.json`. Tên chính: `ASPNETCORE_ENVIRONMENT` (`Development` hoặc `docker`), `ASPNETCORE_URLS`.
 
 ## Changelog
+- 2026-11-08 — Compose: map Pricing ra host `15040→5040` (cấu hình `PRICING_HOST_PORT`) để tránh xung đột cổng 5040 với Windows CDPSvc.
 - 2026-11-08 — BTH9: tích hợp code mẫu PolicyService và PolicySearchService, Compose chạy được, sửa hạn token Blazor (`expiryTimeStamp`) để Products / Policies / Chat gọi API.
 
 ## Đẩy lên GitHub & thêm cộng tác viên
