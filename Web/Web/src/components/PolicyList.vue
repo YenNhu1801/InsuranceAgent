@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="filter-container">
-            <h4>Search policies</h4>
+            <h4>Tìm hợp đồng đã lập chỉ mục</h4>
             <b-form inline>
-                <b-input v-model="filterFields.number" placeholder="Policy number" class="mr-sm-2 mb-sm-0 search-input"/>
-                <b-input v-model="filterFields.policyHolder" placeholder="Policy Holder" class="mr-sm-2 mb-sm-0 search-input"/>
-                <b-button v-on:click="search()" variant="primary" class="search-button">Search</b-button>
+                <b-input v-model="filterFields.number" placeholder="Số hợp đồng" class="mr-sm-2 mb-sm-0 search-input"/>
+                <b-input v-model="filterFields.policyHolder" placeholder="Chủ hợp đồng" class="mr-sm-2 mb-sm-0 search-input"/>
+                <b-button v-on:click="search()" variant="primary" class="search-button">Tìm</b-button>
             </b-form>
         </div>
 

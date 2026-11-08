@@ -1,7 +1,7 @@
 <template>
     <div class="hello">
         <h1>{{ msg }}</h1>
-        <h3>This is an example of a very simplified insurance sales system made in a microservice architecture using Micronaut.</h3>
+        <h3>Đại lý đăng nhập bằng JWT. Cổng API chặn yêu cầu chưa xác thực. Chọn sản phẩm, tạo báo giá, chuyển thành hợp đồng, rồi tìm hợp đồng.</h3>
 
         <img class="arch-image" alt="architecture" src="https://raw.githubusercontent.com/asc-lab/dotnetcore-microservices-poc/master/readme-images/dotnetcore-microservices-architecture.png" />
     </div>

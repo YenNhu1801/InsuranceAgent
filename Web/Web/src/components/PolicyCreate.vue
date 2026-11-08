@@ -1,6 +1,6 @@
 <template>
     <div class="form-container">
-        <h2>Fill information about Policy Holder</h2>
+        <h2>Nhập chủ hợp đồng để hoàn tất</h2>
         <b-form @submit="createPolicy">
             <b-form-group id="firstNameGroup"
                           label="First name:"
@@ -79,7 +79,7 @@
                 </b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Confirm</b-button>
+            <b-button type="submit" variant="primary">Xác nhận hợp đồng</b-button>
         </b-form>
 
     </div>
@@ -101,12 +101,13 @@
                     taxId: ''
                 },
                 policyAddress: {
-                    country: 'Poland',
+                    country: 'VN',
                     zipCode: '',
                     city: '',
                     street: ''
                 },
                 countries: [
+                    'VN',
                     'Poland',
                     'France',
                     'Germany'

@@ -1,17 +1,18 @@
 <template>
     <div id="app">
+        <p class="lab-note">Lab 9 — Cổng đại lý bảo hiểm. Đăng nhập JWT, chọn sản phẩm, tạo báo giá rồi chuyển thành hợp đồng, sau đó tìm hợp đồng. VueJS chỉ gọi Auth và Agent Portal Gateway.</p>
         <div id="nav">
-            <router-link to="/">Home</router-link>
+            <router-link to="/">Trang chủ</router-link>
             |
-            <router-link to="/products">Products</router-link>
+            <router-link to="/products">Sản phẩm</router-link>
             |
-            <router-link to="/policies">Policies</router-link>
+            <router-link to="/policies">Tìm hợp đồng</router-link>
             |
-            <router-link to="/dashboard">Dashboard</router-link>
+            <router-link to="/dashboard">Bảng số liệu</router-link>
             |
-            <router-link to="/chat">Chat for Agents</router-link>
+            <router-link to="/chat">Chat</router-link>
             |
-            <router-link to="/account">Account</router-link>
+            <router-link to="/account">Đăng nhập</router-link>
         </div>
 
         <hr/>
@@ -53,6 +54,15 @@
 
     #nav a.router-link-exact-active {
         color: #42b983;
+    }
+
+    .lab-note {
+        margin: 12px auto 0;
+        max-width: 920px;
+        text-align: left;
+        background: #eef6f1;
+        border: 1px solid #1f4b3a;
+        padding: 8px 12px;
     }
 
     #main-container {
