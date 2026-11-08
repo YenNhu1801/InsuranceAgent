@@ -179,7 +179,7 @@ Chạy trực tiếp, không Docker:
 - `dotnet test src/PolicySearchService/PolicySearchService.Test/PolicySearchService.Test.csproj`: 3/3 (`PolicyCreatedIndexingTest` kiểm tra map sự kiện sang bản ghi tìm kiếm và kết quả query).
 - Eureka đăng ký PRODUCTSERVICE:5030, PRICINGSERVICE:5040, POLICYSERVICE:5050, POLICYSEARCHSERVICE:5065.
 - Chuỗi Auth → Gateway: đăng nhập, 4 sản phẩm, tạo báo giá TRI phí 108, tạo hợp đồng, tìm theo đúng số hợp đồng thấy phí 108 ở lần thử thứ 2, không token thì 401.
-- Vue: `npm run serve` biên dịch xong và http://localhost:8080 trả 200. Chưa bấm hết form trên trình duyệt trong lượt này.
+- Vue: `npm run serve` biên dịch xong và http://localhost:8080 trả 200. Trên trình duyệt đã đăng nhập, chọn Safe Traveller, tính phí 108 EUR, tạo hợp đồng `b8a6b44f-9574-4f86-a780-b796d58d0d44` cho Ha Le, rồi tìm theo tên và thấy đúng số đó trong bảng.
 
 Chưa chạy: Docker Compose, Chat, Dashboard, Payment (không tính xem số dư là thanh toán), Document/JS Report.
 
