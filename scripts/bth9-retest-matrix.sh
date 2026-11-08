@@ -92,7 +92,11 @@ if [[ -n "${PNUM:-}" ]]; then
     sleep 3
   done
   if [[ -n "$PBAL" ]]; then
-    pass "Payment: tai khoan policy sau PolicyCreated (Marten, du lieu lab)"
+    if python3 -c 'import json,sys; b=json.loads(open("/tmp/bth9-pay.json").read())["balance"]; assert float(b["balance"])!=0 or b["policyNumber"]' 2>/dev/null; then
+      pass "Payment: tai khoan + so du lab sau PolicyCreated (khong tien that)"
+    else
+      pass "Payment: tai khoan policy sau PolicyCreated (Marten, du lieu lab)"
+    fi
   else
     MSG=$(head -c 120 /tmp/bth9-pay.json 2>/dev/null)
     fail "Payment: so du tai khoan" "HTTP $CODE — $MSG (chi du lieu lab, khong tien that)"

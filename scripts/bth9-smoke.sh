@@ -22,6 +22,22 @@ POLICY=$(curl -sf -X POST "$GW/api/Policies" -H "Authorization: Bearer $TOKEN" -
 echo "POLICY_OK $POLICY"
 PNUM=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["policyNumber"])' "$POLICY")
 
+PAY="${PAY:-http://localhost:5070}"
+PAY_OK=""
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  PBAL=$(curl -sf --max-time 10 "$PAY/api/Payment/accounts/$PNUM" 2>/dev/null || true)
+  if [[ -n "$PBAL" ]] && python3 -c 'import json,sys; json.loads(sys.argv[1])' "$PBAL" 2>/dev/null; then
+    echo "PAYMENT_OK $PBAL"
+    PAY_OK=1
+    break
+  fi
+  sleep 2
+done
+if [[ -z "$PAY_OK" ]]; then
+  echo "PAYMENT_FAIL no account for $PNUM (du lieu lab)" >&2
+  exit 1
+fi
+
 sleep 2
 SEARCH=$(curl -sf -H "Authorization: Bearer $TOKEN" --get "$GW/api/PolicySearch" --data-urlencode "q=Nguyen")
 echo "SEARCH_OK $SEARCH"

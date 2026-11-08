@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using PaymentService.Domain;
@@ -19,6 +20,9 @@ public class PolicyCreatedHandler : INotificationHandler<PolicyCreated>
 
     public async Task Handle(PolicyCreated notification, CancellationToken cancellationToken)
     {
+        if (await dataStore.PolicyAccounts.ExistsWithPolicyNumber(notification.PolicyNumber))
+            return;
+
         var policy = new PolicyAccount
         (
             notification.PolicyNumber,
@@ -26,14 +30,12 @@ public class PolicyCreatedHandler : INotificationHandler<PolicyCreated>
             notification.PolicyHolder.FirstName,
             notification.PolicyHolder.LastName
         );
+        var premiumDue = notification.PolicyFrom <= DateTime.UtcNow
+            ? new DateTimeOffset(notification.PolicyFrom, TimeSpan.Zero)
+            : DateTimeOffset.UtcNow;
+        policy.ExpectedPayment(notification.TotalPremium, premiumDue);
 
-        using (dataStore)
-        {
-            if (await dataStore.PolicyAccounts.ExistsWithPolicyNumber(notification.PolicyNumber))
-                return;
-
-            dataStore.PolicyAccounts.Add(policy);
-            await dataStore.CommitChanges();
-        }
+        dataStore.PolicyAccounts.Add(policy);
+        await dataStore.CommitChanges();
     }
 }

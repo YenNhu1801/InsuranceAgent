@@ -1,8 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using DashboardService.DataAccess.Elastic;
 using DashboardService.Domain;
 using DotNet.Testcontainers.Builders;
 using Elastic.Clients.Elasticsearch;
+using Elastic.Transport;
 using Testcontainers.Elasticsearch;
 using Xunit;
 
@@ -10,13 +12,13 @@ namespace DashboardService.Test;
 
 public class ElasticSearchInContainerFixture : IAsyncLifetime
 {
+    // Khong bind host 9200 — xung dot voi elasticsearch trong docker compose tren may dev.
     private readonly ElasticsearchContainer testContainer = new ElasticsearchBuilder()
         .WithImage("elasticsearch:8.9.2")
-        .WithName("elasticsearch-892")
+        .WithName($"elasticsearch-bth9-test-{Guid.NewGuid():N}".Substring(0, 20))
         .WithEnvironment("discovery.type", "single-node")
         .WithEnvironment("xpack.security.enabled", "false")
-        .WithPortBinding(9200, 9200)
-        .WithPortBinding(9300, 9300)
+        .WithPortBinding(9200, assignRandomHostPort: true)
         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(9200))
         .Build();
     
@@ -34,7 +36,8 @@ public class ElasticSearchInContainerFixture : IAsyncLifetime
 
     public ElasticsearchClient ElasticClient()
     {
-        var connectionSettings = new ElasticsearchClientSettings()
+        var url = new Uri($"http://{testContainer.Hostname}:{testContainer.GetMappedPublicPort(9200)}");
+        var connectionSettings = new ElasticsearchClientSettings(url)
             .DefaultMappingFor<PolicyDocument>(m =>
                 m.IndexName("policy_lab_stats").IdProperty(d => d.Number));
         return new ElasticsearchClient(connectionSettings);
