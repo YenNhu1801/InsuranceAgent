@@ -38,8 +38,18 @@ if [[ -z "$PAY_OK" ]]; then
   exit 1
 fi
 
-sleep 2
-SEARCH=$(curl -sf -H "Authorization: Bearer $TOKEN" --get "$GW/api/PolicySearch" --data-urlencode "q=Nguyen")
-echo "SEARCH_OK $SEARCH"
-python3 -c 'import json,sys; d=json.loads(sys.argv[1]); nums=[p["policyNumber"] for p in d["policies"]]; assert sys.argv[2] in nums, nums' "$SEARCH" "$PNUM"
+SEARCH_OK=0
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  SEARCH=$(curl -sf -H "Authorization: Bearer $TOKEN" --get "$GW/api/PolicySearch" --data-urlencode "q=Nguyen" 2>/dev/null || true)
+  if [[ -n "$SEARCH" ]] && python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert sys.argv[2] in [p["policyNumber"] for p in d.get("policies",[])]' "$SEARCH" "$PNUM" 2>/dev/null; then
+    echo "SEARCH_OK $SEARCH"
+    SEARCH_OK=1
+    break
+  fi
+  sleep 2
+done
+if [[ -z "$SEARCH_OK" ]]; then
+  echo "SEARCH_FAIL policy $PNUM chua index (cho ES/Rabbit them thoi gian)" >&2
+  exit 1
+fi
 echo "SMOKE_OK policy=$PNUM"
