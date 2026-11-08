@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediatR;
+using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,8 @@ public class Startup
     {
         services.AddDiscoveryClient(Configuration);
         services.AddMvc()
-            .AddNewtonsoftJson();
+            .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         services.AddMediatR(opts => opts.RegisterServicesFromAssemblyContaining<Startup>());
         services.AddElasticSearch(Configuration.GetConnectionString("ElasticSearchConnection"));
         services.AddRabbitListeners();
@@ -50,6 +52,7 @@ public class Startup
         }
         
         app.UseHttpsRedirection();
+        app.UseDiscoveryClient();
         app.UseRabbitListeners(new List<Type> { typeof(PolicyCreated) });
         app.UseEndpoints(endpoints => endpoints.MapControllers());
     }

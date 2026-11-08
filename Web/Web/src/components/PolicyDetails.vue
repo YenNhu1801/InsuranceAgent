@@ -1,21 +1,21 @@
 <template>
     <div>
-        <h3>Policy details: {{ policy.number }}</h3>
+        <h3>Chi tiết hợp đồng: {{ policy.number }}</h3>
         <div>
             <div class="row">
-                <span><strong>From:</strong> {{ policy.dateFrom }}</span>
+                <span><strong>Từ ngày:</strong> {{ policy.dateFrom }}</span>
             </div>
             <div class="row">
-                <span><strong>To:</strong> {{ policy.dateTo }}</span>
+                <span><strong>Đến ngày:</strong> {{ policy.dateTo }}</span>
             </div>
             <div class="row">
-                <span><strong>Policy holder:</strong> {{ policy.policyHolder }}</span>
+                <span><strong>Chủ hợp đồng:</strong> {{ policy.policyHolder }}</span>
             </div>
             <div class="row">
-                <span><strong>Total premium:</strong> {{ policy.totalPremium }} EUR</span>
+                <span><strong>Tổng phí:</strong> {{ policy.totalPremium }} EUR</span>
             </div>
             <div class="row">
-                <span><strong>Product code:</strong> {{ policy.productCode }}</span>
+                <span><strong>Mã sản phẩm:</strong> {{ policy.productCode }}</span>
             </div>
             <div class="row">
                 <span><strong>Account number:</strong> {{ policy.accountNumber }}</span>

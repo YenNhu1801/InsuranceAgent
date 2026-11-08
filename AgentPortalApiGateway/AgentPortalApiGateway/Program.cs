@@ -49,6 +49,7 @@ public class Program
                     {
                         x.RequireHttpsMetadata = false;
                         x.SaveToken = true;
+                        x.MapInboundClaims = true;
                         x.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,

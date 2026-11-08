@@ -17,21 +17,16 @@ dotnet test src/PolicyService/PolicyService.Test/PolicyService.Test.csproj
 dotnet test src/PaymentService/PaymentService.Test/PaymentService.Test.csproj
 ```
 
-## Triển khai
-`docker compose up --build` dựng Postgres (user `lab_user`, các database trong `postgres/postgres/createdatabases.sql`), RabbitMQ (`rabbit`), Elasticsearch 8.9.2, Eureka, Pricing (:5040), Policy (:5050), Policy Search (:5065).
+## Chạy Lab 9
+Hướng dẫn Windows, cổng, thứ tự terminal và hai chức năng (báo giá → hợp đồng, tìm hợp đồng): `docs/HUONG-DAN-TRIEN-KHAI-LAB9.md`.
 
-Biến môi trường: xem `.env.example` (chỉ tên/giá trị mẫu).
+Đăng nhập demo lấy từ `src/AuthService/AuthService/DataAccess/InsuranceAgentsInMemoryDb.cs`.
 
-Nếu không có Docker, hướng dẫn chạy trực tiếp trên máy nằm trong `docs/HUONG-DAN-TRIEN-KHAI-LAB9.md`. Script kiểm tra hai chức năng chính (báo giá → hợp đồng, tìm kiếm) và tài khoản thanh toán:
-
-```
-bash scripts/lab9-e2e.sh
-```
-
-Trang demo cục bộ: `python3 scripts/lab9-demo/server.py` rồi mở http://127.0.0.1:8090.
+`docker-compose.yml` mô tả Postgres, RabbitMQ, Elasticsearch 8.9.2, Eureka, Pricing, Policy, Policy Search. File này chưa được chạy trên máy kiểm tra.
 
 ## Changelog
 - 2026-11-08 — Tích hợp PolicyService và PolicySearchService cho Lab 9, compose triển khai, sửa listener RabbitMQ đợi xử lý xong trước khi đóng scope, ổn định test hết hạn offer.
+- 2026-11-08 — Vue gọi Auth và gateway; Eureka đăng ký Pricing/Policy/Search; hướng dẫn chạy Windows.
 
 ## Đẩy lên GitHub & thêm cộng tác viên
 ```

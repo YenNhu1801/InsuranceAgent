@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Home msg="Welcome to LAB Insurance Sales Portal"/>
+        <Home msg="Cổng bán bảo hiểm — đăng nhập trước khi tạo báo giá"/>
     </div>
 </template>
 

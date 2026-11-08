@@ -2,6 +2,7 @@
 using AuthService.DataAccess;
 using AuthService.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,8 @@ public class Startup
             }));
 
         services.AddMvc()
-            .AddNewtonsoftJson();
+            .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

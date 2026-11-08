@@ -1,112 +1,194 @@
-# Hướng dẫn triển khai Lab 9 — Đại lý bảo hiểm
+# Lab 9 — cách chạy trên Windows
 
-Sinh viên: Nguyễn Thị Yến Như, 2424802010403, D24CNTT04.
-Kho: https://github.com/YenNhu1801/InsuranceAgent
+Kho: https://github.com/YenNhu1801/InsuranceAgent  
+Nhánh: `cursor/lab9-policy-services-599a`
 
-Hạn nộp: mô tả trên Moodle và trang tổng quan môn ghi 18:00 ngày 08/11/2026 (Asia/Bangkok). File PDF và trường hạn Moodle ghi 19:00 cùng ngày. Bản này chuẩn bị theo mốc sớm hơn (18:00). Không nộp Drive và không nộp e-learning trong lần chạy này.
+Hạn trong PDF là **19:00 ngày 08/11/2026**. Dòng 18:00 trên Moodle chỉ là lệch mô tả, không đổi hạn PDF.
 
-## Đã tích hợp
+Hướng dẫn này là cách tự chạy trên máy Windows. Phần đã kiểm tra ở dưới là tiến trình chạy trực tiếp (không Docker) trên một máy Linux có cùng cổng và lệnh `dotnet`. File `docker-compose.yml` có trong repo nhưng **chưa được chạy**, vì môi trường kiểm tra không có Docker.
 
-Năm archive mẫu được đưa vào cây thư mục sẵn có:
+Giao diện dùng để thao tác là Vue có sẵn trong `Web/Web`. Blazor trong `BlazorWasmClient` được giữ từ bài trước, không phải đường chạy của phụ lục VueJS.
 
-- `src/PolicyService/PolicyService`
-- `src/PolicyService/PolicyService.Api` (contract đã trùng mẫu)
-- `src/PolicyService/PolicyService.Test`
-- `src/PolicySearchService/PolicySearchService`
-- `src/PolicySearchService/PolicySearchService.Api`
+## Phần mềm cần cài
 
-Tên project giữ nguyên. Tham chiếu được sửa cho đúng vị trí trong repo:
+Đã dùng các bản sau khi kiểm tra. Trên Windows hãy cài cùng dòng phiên bản.
 
-- PolicyService → `src/PricingService/PricingService.Api`
-- PolicySearchService → `src/PolicyService/PolicyService.Api`
+| Phần | Bản đã dùng | Ghi chú |
+| --- | --- | --- |
+| .NET SDK | 8.0.427 | `dotnet --version` phải là 8.x |
+| Node.js | 22.23.4 | Kèm npm 10.9.9 |
+| JDK | OpenJDK 21.0.12 | Chỉ để chạy Eureka |
+| Maven | 3.8.7 | `mvn -version` |
+| PostgreSQL | 16 | Tạo user và database ở dưới |
+| RabbitMQ | 3.12.1 | Cổng 5672. Tài khoản mặc định của broker chỉ dùng từ localhost |
+| Elasticsearch | **8.9.2** | Đúng dòng với thư viện `Elastic.Clients.Elasticsearch` 8.9.3. Không dùng 7.x |
 
-Frontend Blazor và Vue hiện có không bị đổi. BTH2 (học liệu TDMU) không được trộn vào mã bảo hiểm.
+Vue trong repo là Vue CLI 3 / Vue 2 / webpack 4. Trên Node 22 phải đặt:
 
-## Chức năng đã chạy thật
-
-1. Tạo báo giá: Policy gọi Pricing REST, lưu offer PostgreSQL.
-2. Mua hợp đồng: lưu policy, phát `PolicyCreated` qua outbox RabbitMQ, đọc lại chi tiết hợp đồng.
-3. Tìm kiếm: PolicySearch nhận sự kiện, lập chỉ mục Elasticsearch, tìm theo số hợp đồng hoặc tên.
-4. Thanh toán: Payment tạo tài khoản hợp đồng sau `PolicyCreated` và trả số dư.
-
-Dữ liệu demo là dữ liệu giả (An Nguyen, Ha Le, Linh Pham, mã số thuế giả).
-
-## Cách A — Docker Compose
-
-Cần Docker. Từ thư mục gốc repo:
-
-```bash
-docker compose up --build
+```powershell
+$env:NODE_OPTIONS="--openssl-legacy-provider"
 ```
 
-Cổng:
+`node-sass` 4 không biên dịch trên Node 22. Repo đã chuyển `sass-loader` sang 10 và `sass`. Cài npm bằng `--legacy-peer-deps`.
 
-| Thành phần | Cổng |
-| --- | --- |
-| Postgres | 5432 |
-| RabbitMQ | 5672, giao diện 15672 |
-| Elasticsearch | 9200 |
-| Eureka | 8761 |
-| Pricing | 5040 |
-| Policy | 5050 |
-| Policy Search | 5065 |
+## Cơ sở dữ liệu và dịch vụ nền
 
-Trong container, Policy gọi `http://pricing:5040/api/pricing`. Host logic `PricingService` vẫn đi qua Eureka nếu URI cấu hình đúng tên đó.
+PostgreSQL: mở `postgres/postgres/createdatabases.sql`. Script tạo user `lab_user` và 4 database: `lab_netmicro_policy`, `lab_netmicro_pricing`, `lab_netmicro_payments`, `lab_netmicro_jobs`. Mật khẩu nằm trong file SQL đó, không ghi lại ở đây.
 
-Mật khẩu Postgres của lab nằm trong `postgres/postgres/createdatabases.sql` và `appsettings` sẵn có. Không thêm bí mật mới.
+Trên PostgreSQL 15/16, sau khi tạo database, với từng database chạy:
 
-## Cách B — Máy không có Docker
-
-Đã dùng cách này trên môi trường kiểm thử vì không có Docker daemon.
-
-1. Cài .NET SDK 8, PostgreSQL, RabbitMQ. Elasticsearch 8.9.2 (khớp `Elastic.Clients.Elasticsearch` 8.9.3). Elasticsearch 7 trong compose cũ không khớp client.
-2. Tạo user và database bằng `postgres/postgres/createdatabases.sql`. Trên PostgreSQL 15+ cần `GRANT ALL ON SCHEMA public TO lab_user` cho từng database.
-3. Bật RabbitMQ, user `guest`/`guest` trên localhost.
-4. Elasticsearch: `discovery.type: single-node`, `xpack.security.enabled: false`, `vm.max_map_count=262144`.
-5. Chạy:
-
-```bash
-export ASPNETCORE_ENVIRONMENT=Development
-export Eureka__Client__ShouldRegisterWithEureka=false
-export Eureka__Client__ShouldFetchRegistry=false
-dotnet run --project src/PricingService/PricingService --no-launch-profile --urls http://localhost:5040
-dotnet run --project src/PolicyService/PolicyService --no-launch-profile --urls http://localhost:5050
-dotnet run --project src/PolicySearchService/PolicySearchService --no-launch-profile --urls http://localhost:5065
-dotnet run --project src/PaymentService/PaymentService --no-launch-profile --urls http://localhost:5070
-bash scripts/lab9-e2e.sh
+```sql
+GRANT ALL ON SCHEMA public TO lab_user;
+ALTER SCHEMA public OWNER TO lab_user;
 ```
 
-`appsettings.Development.json` của Policy trỏ Pricing tới `http://localhost:5040/api/pricing`.
+Policy dùng database `lab_netmicro_policy` (NHibernate tự cập nhật bảng). Pricing dùng `lab_netmicro_pricing`. Product dùng EF InMemory, không cần database.
 
-Trang bấm thử:
+RabbitMQ: cài service Windows, bật, để cổng 5672. Code nối `localhost`, user mặc định của image/cài đặt RabbitMQ.
 
-```bash
-python3 scripts/lab9-demo/server.py
+Elasticsearch 8.9.2: giải nén, sửa `config/elasticsearch.yml`:
+
+```yaml
+cluster.name: lab9
+node.name: lab9-1
+network.host: 127.0.0.1
+http.port: 9200
+discovery.type: single-node
+xpack.security.enabled: false
+xpack.security.http.ssl.enabled: false
+xpack.security.transport.ssl.enabled: false
+ingest.geoip.downloader.enabled: false
 ```
 
-Mở http://127.0.0.1:8090. Bốn nút gọi API đang chạy.
+Chạy `bin\elasticsearch.bat`. Kiểm tra http://127.0.0.1:9200 . `vm.max_map_count` chỉ có trên Linux, bỏ qua trên Windows.
 
-## Kiểm thử
+## Cấu hình local
 
-```bash
-dotnet test src/PolicyService/PolicyService.Test/PolicyService.Test.csproj
-dotnet test src/PaymentService/PaymentService.Test/PaymentService.Test.csproj
-dotnet test src/PolicySearchService/PolicySearchService.Test/PolicySearchService.Test.csproj
+Trong `Web/Web`:
+
+```powershell
+copy .env-example .env
 ```
 
-PolicyService.Test: 8 test domain của mẫu. Các test dùng chung `SysTime` nên assembly tắt chạy song song, nếu không test hết hạn offer lúc được lúc không.
+Hai dòng cần đúng:
 
-## Điểm đã chỉnh so với archive
+```
+VUE_APP_BACKEND_URL=http://localhost:8099/api/
+VUE_APP_AUTH_URL=http://localhost:6060/api/
+```
 
-- Polly 8.4.0 không còn `Policy.Handle`. Giữ lời gọi mẫu, hạ gói xuống Polly 7.2.4.
-- MediatR Policy Search nâng 12.4.1 để không bị hạ cấp so với API.
-- `Npgsql.EnableLegacyTimestampBehavior` cho NHibernate và Npgsql 8.
-- Listener RabbitMQ của Policy Search, Payment, Chat, Dashboard `await` publish bên trong `using` scope. Trước đó scope bị hủy khi Task chưa chạy xong, Payment báo session Marten đã dispose và không tạo tài khoản.
-- Dockerfile build từ gốc repo, không dùng layout phẳng của archive.
+File `.env` không commit. Dòng chatbot có placeholder, không cần điền vì Chat không nằm trong hai chức năng bên dưới.
 
-## Chưa làm
+Không đặt biến `Eureka__Client__ShouldRegisterWithEureka=false`. Policy gọi Pricing qua tên Eureka `PricingService`. Nếu Eureka chưa chạy, tạo báo giá sẽ lỗi.
 
-- Không upload video lên Drive, không nộp link e-learning.
-- Không dựng được image Docker trong môi trường này vì không có Docker daemon. File compose vẫn là cách triển khai lặp lại được khi có Docker.
-- Eureka không bắt buộc cho lần chạy trực tiếp vì URI Pricing là localhost. Compose vẫn dựng Eureka.
-- Gateway Ocelot/JWT và Blazor chưa nằm trong lần demo API này.
+Tài khoản đăng nhập demo khai báo trong `src/AuthService/AuthService/DataAccess/InsuranceAgentsInMemoryDb.cs`. Mở file đó và dùng đúng login/password của một đại lý. Không chép mật khẩu vào README hay báo cáo.
+
+## Thứ tự bật — mỗi khối một terminal
+
+Mở PowerShell tại thư mục gốc repo. Giữ mỗi cửa sổ chạy, không tắt.
+
+**1. Elasticsearch** — `bin\elasticsearch.bat`  
+**2. Bảo đảm Postgres và RabbitMQ đã là Windows service và đang chạy.**
+
+**3. Eureka**
+
+```powershell
+cd eureka-server\eureka-server
+mvn -DskipTests package
+java -jar target\eureka-server.jar --server.port=8761
+```
+
+Đợi http://localhost:8761 mở được.
+
+**4. Auth** — cổng 6060
+
+```powershell
+cd src\AuthService\AuthService
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:6060
+```
+
+**5. Product** — cổng 5030
+
+```powershell
+cd src\ProductService\ProductService
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:5030
+```
+
+**6. Pricing** — cổng 5040
+
+```powershell
+cd src\PricingService\PricingService
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:5040
+```
+
+**7. Policy** — cổng 5050
+
+```powershell
+cd src\PolicyService\PolicyService
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:5050
+```
+
+**8. Policy Search** — cổng 5065
+
+```powershell
+cd src\PolicySearchService\PolicySearchService
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:5065
+```
+
+**9. Cổng API** — chỉ bật sau khi Eureka đã thấy Product, Pricing, Policy, Policy Search. Địa chỉ http://localhost:8761
+
+```powershell
+cd AgentPortalApiGateway\AgentPortalApiGateway
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run --urls http://localhost:8099
+```
+
+**10. Vue** — cổng 8080
+
+```powershell
+cd Web\Web
+$env:NODE_OPTIONS="--openssl-legacy-provider"
+npm install --legacy-peer-deps
+npm run serve -- --port 8080
+```
+
+Mở http://localhost:8080
+
+Trên máy Linux đã kiểm tra, `bash scripts/lab9-up.sh` làm các bước 3–9 (cần `tmux` và JDK). Script đó không dành cho Windows.
+
+## Hai chức năng trên giao diện Vue
+
+Đăng nhập bằng tài khoản trong `InsuranceAgentsInMemoryDb.cs`.
+
+1. **Báo giá rồi thành hợp đồng.** Vào Sản phẩm, chọn Safe Traveller (mã TRI), giữ hoặc nhập ngày hiệu lực, số người lớn, số trẻ em, điểm đến. Bấm tính phí. Giá đi Policy → Pricing (REST) qua gateway. Bấm chuyển thành hợp đồng, nhập chủ hợp đồng, xác nhận. Trang chi tiết hiện số hợp đồng, mã TRI và tổng phí.
+2. **Tìm hợp đồng.** Vào Tìm hợp đồng, nhập số vừa tạo hoặc tên chủ hợp đồng, bấm Tìm. Policy đã phát `PolicyCreated` lên RabbitMQ. Policy Search ghi Elasticsearch rồi gateway trả danh sách. Lần tìm ngay sau khi tạo có thể cần bấm lại sau 1–2 giây.
+
+Request không có JWT tới gateway bị từ chối (đã thấy HTTP 401 với `GET /api/products`).
+
+## Đã kiểm tra khi viết hướng dẫn này
+
+Chạy trực tiếp, không Docker:
+
+- `dotnet build InsuranceAgent.sln`: 0 lỗi.
+- `dotnet test src/PolicyService/PolicyService.Test/PolicyService.Test.csproj`: 8/8.
+- `dotnet test src/PolicySearchService/PolicySearchService.Test/PolicySearchService.Test.csproj`: 3/3 (`PolicyCreatedIndexingTest` kiểm tra map sự kiện sang bản ghi tìm kiếm và kết quả query).
+- Eureka đăng ký PRODUCTSERVICE:5030, PRICINGSERVICE:5040, POLICYSERVICE:5050, POLICYSEARCHSERVICE:5065.
+- Chuỗi Auth → Gateway: đăng nhập, 4 sản phẩm, tạo báo giá TRI phí 108, tạo hợp đồng, tìm theo đúng số hợp đồng thấy phí 108 ở lần thử thứ 2, không token thì 401.
+- Vue: `npm run serve` biên dịch xong và http://localhost:8080 trả 200. Chưa bấm hết form trên trình duyệt trong lượt này.
+
+Chưa chạy: Docker Compose, Chat, Dashboard, Payment (không tính xem số dư là thanh toán), Document/JS Report.
+
+## Lỗi đã gặp và cách xử lý
+
+- Policy/Pricing không hiện trên Eureka nếu biến môi trường tắt đăng ký, hoặc bật service trước Eureka. Tắt biến đó, khởi động lại Eureka rồi các service, sau đó mới bật gateway.
+- Tạo báo giá lỗi kết nối Pricing: Eureka chưa có `PRICINGSERVICE`, hoặc Policy không fetch registry.
+- Vue `Cannot find module 'node-sass'`: dùng Node 22 với cấu hình hiện tại (`sass` + `sass-loader` 10), cài bằng `npm install --legacy-peer-deps`, và `NODE_OPTIONS=--openssl-legacy-provider`.
+- `npm install` báo conflict peer: thêm `--legacy-peer-deps`.
+- Gateway 404 với `/swagger` là bình thường. Nghiệp vụ là `/api/...`.
+- Tìm kiếm rỗng ngay sau khi tạo hợp đồng: đợi outbox (khoảng 1 giây) và bấm Tìm lại.
+- Elasticsearch 7 không dùng được với client 8.9.3 trong project.

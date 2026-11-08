@@ -1,10 +1,10 @@
 <template>
     <div class="mx-auto" style="max-width: 20rem;">
         <div v-if="!auth.isAuthenticated()">
-            <h2>Log in to your account</h2>
+            <h2>Đăng nhập cổng đại lý</h2>
             <b-form>
                 <b-form-group id="usernameGroup"
-                              label="Username:"
+                              label="Tên đăng nhập:"
                               label-for="userName">
                     <b-form-input id="userName"
                                   type="text"
@@ -15,7 +15,7 @@
                 </b-form-group>
 
                 <b-form-group id="passwordGroup"
-                              label="Password:"
+                              label="Mật khẩu:"
                               label-for="password">
                     <b-form-input id="password"
                                   type="password"
@@ -25,7 +25,7 @@
                     </b-form-input>
                 </b-form-group>
 
-                <b-button type="button" v-on:click="login()" variant="primary">Login</b-button>
+                <b-button type="button" v-on:click="login()" variant="primary">Đăng nhập</b-button>
             </b-form>
 
         </div>

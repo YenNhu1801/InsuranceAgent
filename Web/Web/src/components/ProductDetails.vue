@@ -9,7 +9,7 @@
                 <h1 class="display-3">{{productDetails.name}}</h1>
                 <p class="lead">{{productDetails.description}}.</p>
                 <hr class="my-4">
-                <p>Enter the data needed to calculate the price</p>
+                <p>Nhập thông tin để tính phí và tạo báo giá.</p>
 
                 <div class="row">
 
@@ -77,7 +77,7 @@
             <div class="col-sm-12 margin-top-10">
                 <div class="d-flex flex-row-reverse" v-if="'EDIT' === mode">
                     <div class="p-2">
-                        <button type="submit" class="btn btn-primary" v-on:click.stop.prevent="calculatePrice">Calculate price
+                        <button type="submit" class="btn btn-primary" v-on:click.stop.prevent="calculatePrice">Tính phí và tạo báo giá
                         </button>
                     </div>
                     <div class="p-2">
@@ -89,7 +89,7 @@
 
                 <div class="d-flex flex-row-reverse" v-if="'VIEW' === mode">
                     <div class="p-2">
-                        <button type="submit" class="btn btn-primary" v-on:click.stop.prevent="createOffer">Buy</button>
+                        <button type="submit" class="btn btn-primary" v-on:click.stop.prevent="createOffer">Chuyển thành hợp đồng</button>
                     </div>
                     <div class="p-2">
                         <a class="btn btn-secondary" href="#" v-on:click.stop.prevent="backToEdit" role="button">Change
@@ -123,8 +123,8 @@
                 price: {
                     amountToPay: null
                 },
-                policyFrom: '',
-                policyTo: '',
+                policyFrom: '2026-12-01',
+                policyTo: '2026-12-15',
                 offerNumber: ''
             }
         },
@@ -185,7 +185,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
     .margin-top-10 {
         margin-top: 10px;
     }

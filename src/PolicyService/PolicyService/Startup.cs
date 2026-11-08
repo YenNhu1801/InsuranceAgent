@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,8 @@ public class Startup
     {
         services.AddDiscoveryClient(Configuration);
         services.AddMvc()
-            .AddNewtonsoftJson();
+            .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         services.AddMediatR(opts => opts.RegisterServicesFromAssemblyContaining<Startup>());
         services.AddPricingRestClient();
         services.AddNHibernate(Configuration.GetConnectionString("DefaultConnection"));
@@ -47,6 +49,7 @@ public class Startup
         }
 
         app.UseRouting();
+        app.UseDiscoveryClient();
         app.UseHttpsRedirection();
         app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
