@@ -1,6 +1,6 @@
-# Lab 9 runtime: Postgres (lab_user databases), RabbitMQ, Elasticsearch 8,
-# Eureka, Pricing, Policy, and Policy Search.
-# Build context for the .NET images is the repository root.
+# Lab 9. Context .NET images that COPY src/... is the repository root.
+# Host port 5040 is left free (Windows CDPSvc). Inside the network Pricing stays on 5040.
+# Compose Postgres is published on 5432 and does not use host port 5433.
 services:
   postgres:
     build:
@@ -37,7 +37,7 @@ services:
     ports:
       - "9200:9200"
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:9200 >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/9200'"]
       interval: 10s
       timeout: 5s
       retries: 20
@@ -48,6 +48,29 @@ services:
       dockerfile: Dockerfile.maven
     ports:
       - "8761:8761"
+
+  auth:
+    build:
+      context: ./src/AuthService
+      dockerfile: AuthService/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: docker
+      ASPNETCORE_URLS: http://+:6060
+    ports:
+      - "6060:6060"
+
+  product:
+    build:
+      context: ./src/ProductService
+      dockerfile: ProductService/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: docker
+      ASPNETCORE_URLS: http://+:5030
+    depends_on:
+      eureka-server:
+        condition: service_started
+    ports:
+      - "5030:5030"
 
   pricing:
     build:
@@ -62,7 +85,7 @@ services:
       eureka-server:
         condition: service_started
     ports:
-      - "5040:5040"
+      - "15040:5040"
 
   policy:
     build:
@@ -77,6 +100,8 @@ services:
       rabbit:
         condition: service_healthy
       pricing:
+        condition: service_started
+      eureka-server:
         condition: service_started
     ports:
       - "5050:5050"
@@ -93,5 +118,38 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_healthy
+      eureka-server:
+        condition: service_started
     ports:
       - "5065:5065"
+
+  gateway:
+    build:
+      context: ./AgentPortalApiGateway
+      dockerfile: AgentPortalApiGateway/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: docker
+      ASPNETCORE_URLS: http://+:8099
+    depends_on:
+      eureka-server:
+        condition: service_started
+      product:
+        condition: service_started
+      policy:
+        condition: service_started
+      policy-search:
+        condition: service_started
+    ports:
+      - "8099:8099"
+
+  web:
+    build:
+      context: ./Web/Web
+      dockerfile: Dockerfile
+    depends_on:
+      gateway:
+        condition: service_started
+      auth:
+        condition: service_started
+    ports:
+      - "8080:80"

@@ -22,11 +22,12 @@ Hướng dẫn Windows, cổng, thứ tự terminal và hai chức năng (báo g
 
 Đăng nhập demo lấy từ `src/AuthService/AuthService/DataAccess/InsuranceAgentsInMemoryDb.cs`.
 
-`docker-compose.yml` mô tả Postgres, RabbitMQ, Elasticsearch 8.9.2, Eureka, Pricing, Policy, Policy Search. File này chưa được chạy trên máy kiểm tra.
+`docker compose -p insuranceagent-lab9 up -d --build` dựng Eureka, Postgres, RabbitMQ, Elasticsearch, Auth, Product, Pricing, Policy, Policy Search, Gateway và Vue. Cổng Pricing trên máy host là **15040** (trong mạng Compose vẫn 5040). Postgres của Compose dùng 5432, không dùng 5433. Image chưa được build trên máy kiểm tra vì không có Docker CLI.
 
 ## Changelog
 - 2026-11-08 — Tích hợp PolicyService và PolicySearchService cho Lab 9, compose triển khai, sửa listener RabbitMQ đợi xử lý xong trước khi đóng scope, ổn định test hết hạn offer.
 - 2026-11-08 — Vue gọi Auth và gateway; Eureka đăng ký Pricing/Policy/Search; hướng dẫn chạy Windows. Đã bấm trên Vue: báo giá TRI 108 EUR, tạo hợp đồng, tìm thấy hợp đồng vừa tạo.
+- 2026-11-08 — Sửa Docker `COPY --from=build` cho Pricing, Policy, Policy Search. Compose thêm Auth, Product, Gateway, Vue. Cổng host của Pricing là 15040.
 
 ## Đẩy lên GitHub & thêm cộng tác viên
 ```

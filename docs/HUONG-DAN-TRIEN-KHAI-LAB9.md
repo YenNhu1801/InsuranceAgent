@@ -5,7 +5,42 @@ Nhánh: `cursor/lab9-policy-services-599a`
 
 Hạn trong PDF là **19:00 ngày 08/11/2026**. Dòng 18:00 trên Moodle chỉ là lệch mô tả, không đổi hạn PDF.
 
-Hướng dẫn này là cách tự chạy trên máy Windows. Phần đã kiểm tra ở dưới là tiến trình chạy trực tiếp (không Docker) trên một máy Linux có cùng cổng và lệnh `dotnet`. File `docker-compose.yml` có trong repo nhưng **chưa được chạy**, vì môi trường kiểm tra không có Docker.
+Hướng dẫn này là cách tự chạy trên máy Windows. Phần `dotnet run` đã được thực thi trên một máy Linux cùng cổng. Phần Docker Compose ở dưới sửa lỗi build; máy kiểm tra không có Docker CLI nên **chưa build và chưa `up` được image**.
+
+## Docker Compose trên Windows
+
+Lỗi `COPY --from=publish` ở Pricing là do stage trong Dockerfile tên `build`, không phải `publish`. Docker hiểu `publish` là image `docker.io/library/publish` và bị từ chối pull. Policy và Policy Search cùng kiểu đó đã được sửa thành `--from=build`. Các Dockerfile khác có stage `AS publish` nên `--from=publish` là đúng.
+
+Cổng host **5040 không được publish** (CDPSvc đang giữ cổng đó). Container Pricing vẫn nghe `5040` trong mạng Compose. Từ Windows mở Pricing qua http://localhost:15040 . Policy trong mạng gọi `http://pricing:5040`. Postgres của Compose map `5432`, không đụng PostgreSQL 18 đang ở **5433**, và không xóa volume stack cũ.
+
+Trong `D:\InsuranceAgent-Lab9`:
+
+```powershell
+git fetch origin
+git checkout cursor/lab9-policy-services-599a
+git pull origin cursor/lab9-policy-services-599a
+docker compose -p insuranceagent-lab9 up -d --build
+```
+
+Không chạy `docker system prune` và không xóa volume. Project name `insuranceagent-lab9` tách khỏi stack bth4 đang dừng. Đừng bật đồng thời hai stack nếu cùng chiếm 5432, 5672, 8080, 8099, 8761 hoặc 9200.
+
+Sau khi lên, mở http://localhost:8080 . Vue trong image gọi Auth http://localhost:6060/api/ và gateway http://localhost:8099/api/ trên máy Windows. Đăng nhập bằng tài khoản trong `InsuranceAgentsInMemoryDb.cs`.
+
+| Dịch vụ | Cổng trên Windows | Cổng trong mạng Compose |
+| --- | --- | --- |
+| Vue | 8080 | 80 |
+| Auth | 6060 | 6060 |
+| Gateway | 8099 | 8099 |
+| Product | 5030 | 5030 |
+| Pricing | **15040** | 5040 |
+| Policy | 5050 | 5050 |
+| Policy Search | 5065 | 5065 |
+| Eureka | 8761 | 8761 |
+| Postgres | 5432 | 5432 |
+| RabbitMQ | 5672 và 15672 | 5672 |
+| Elasticsearch | 9200 | 9200 |
+
+Hai chức năng giống mục giao diện bên dưới: báo giá TRI rồi tạo hợp đồng, sau đó tìm hợp đồng. Lần tìm đầu có thể cần bấm lại sau 1–2 giây.
 
 Giao diện dùng để thao tác là Vue có sẵn trong `Web/Web`. Blazor trong `BlazorWasmClient` được giữ từ bài trước, không phải đường chạy của phụ lục VueJS.
 
