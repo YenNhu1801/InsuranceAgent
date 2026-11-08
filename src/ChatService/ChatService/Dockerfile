@@ -1,26 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
-ENV APP_HOME /opt/app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-
-COPY PolicyService.Api/*.csproj $APP_HOME/PolicyService.Api/
-COPY ChatService.Api/*.csproj $APP_HOME/ChatService.Api/
-COPY ChatService/*.csproj $APP_HOME/ChatService/
-RUN  cd $APP_HOME/ChatService && dotnet restore
-
-COPY PolicyService.Api $APP_HOME/PolicyService.Api/
-COPY ChatService.Api $APP_HOME/ChatService.Api/
-COPY ChatService $APP_HOME/ChatService/
-RUN cd $APP_HOME/ChatService && dotnet build
-
-FROM build AS publish
-WORKDIR $APP_HOME/ChatService
-RUN dotnet publish -c Release -o out
+WORKDIR /src
+COPY src/PolicyService/PolicyService.Api/PolicyService.Api.csproj src/PolicyService/PolicyService.Api/
+COPY src/ChatService/ChatService.Api/ChatService.Api.csproj src/ChatService/ChatService.Api/
+COPY src/ChatService/ChatService/ChatService.csproj src/ChatService/ChatService/
+RUN dotnet restore src/ChatService/ChatService/ChatService.csproj
+COPY src/PolicyService/PolicyService.Api/ src/PolicyService/PolicyService.Api/
+COPY src/ChatService/ChatService.Api/ src/ChatService/ChatService.Api/
+COPY src/ChatService/ChatService/ src/ChatService/ChatService/
+RUN dotnet publish src/ChatService/ChatService/ChatService.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:4099
 ENV ASPNETCORE_ENVIRONMENT=docker
-COPY --from=publish /opt/app/ChatService/out ./
+COPY --from=build /app/publish ./
 ENTRYPOINT ["dotnet", "ChatService.dll"]

@@ -35,6 +35,7 @@ public class AuthService
             Subject = new ClaimsIdentity(new[]
             {
                 new("sub", agent.Login),
+                new Claim(ClaimTypes.NameIdentifier, agent.Login),
                 new Claim(ClaimTypes.Name, agent.Login),
                 new Claim(ClaimTypes.Role, "SALESMAN"),
                 new Claim(ClaimTypes.Role, "USER"),

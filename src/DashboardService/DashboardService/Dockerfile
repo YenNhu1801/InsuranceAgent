@@ -1,26 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
-ENV APP_HOME /opt/app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-
-COPY DashboardService.Api/*.csproj $APP_HOME/DashboardService.Api/
-COPY PolicyService.Api/*.csproj $APP_HOME/PolicyService.Api/
-COPY DashboardService/*.csproj $APP_HOME/DashboardService/
-RUN  cd $APP_HOME/DashboardService && dotnet restore
-
-COPY DashboardService.Api $APP_HOME/DashboardService.Api/
-COPY PolicyService.Api $APP_HOME/PolicyService.Api/
-COPY DashboardService $APP_HOME/DashboardService/
-RUN cd $APP_HOME/DashboardService && dotnet build
-
-FROM build AS publish
-WORKDIR $APP_HOME/DashboardService
-RUN dotnet publish -c Release -o out
+WORKDIR /src
+COPY src/PolicyService/PolicyService.Api/PolicyService.Api.csproj src/PolicyService/PolicyService.Api/
+COPY src/DashboardService/DashboardService.Api/DashboardService.Api.csproj src/DashboardService/DashboardService.Api/
+COPY src/DashboardService/DashboardService/DashboardService.csproj src/DashboardService/DashboardService/
+RUN dotnet restore src/DashboardService/DashboardService/DashboardService.csproj
+COPY src/PolicyService/PolicyService.Api/ src/PolicyService/PolicyService.Api/
+COPY src/DashboardService/DashboardService.Api/ src/DashboardService/DashboardService.Api/
+COPY src/DashboardService/DashboardService/ src/DashboardService/DashboardService/
+RUN dotnet publish src/DashboardService/DashboardService/DashboardService.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:5035
 ENV ASPNETCORE_ENVIRONMENT=docker
-COPY --from=publish /opt/app/DashboardService/out ./
+COPY --from=build /app/publish ./
 ENTRYPOINT ["dotnet", "DashboardService.dll"]

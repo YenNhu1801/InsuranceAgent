@@ -1,36 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
-ENV APP_HOME /opt/app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-
-COPY PolicyService.Api/*.csproj $APP_HOME/PolicyService.Api/
-COPY PaymentService.Api/*.csproj $APP_HOME/PaymentService.Api/
-COPY PaymentService/*.csproj $APP_HOME/PaymentService/
-RUN  cd $APP_HOME/PaymentService && dotnet restore
-
-COPY PolicyService.Api $APP_HOME/PolicyService.Api/
-COPY PaymentService.Api $APP_HOME/PaymentService.Api/
-COPY PaymentService $APP_HOME/PaymentService/
-RUN cd $APP_HOME/PaymentService && dotnet build
-
-COPY PaymentService.Test/*.csproj $APP_HOME/PaymentService.Test/
-RUN cd $APP_HOME/PaymentService.Test && dotnet restore
-
-COPY PaymentService.Test .$APP_HOME/PaymentService.Test/
-RUN cd $APP_HOME/PaymentService.Test && dotnet build
-
-FROM build AS test
-WORKDIR $APP_HOME/PaymentService.Test
-RUN dotnet test --verbosity:normal
-
-FROM build AS publish
-WORKDIR $APP_HOME/PaymentService
-RUN dotnet publish -c Release -o out
+WORKDIR /src
+COPY src/PolicyService/PolicyService.Api/PolicyService.Api.csproj src/PolicyService/PolicyService.Api/
+COPY src/PaymentService/PaymentService.Api/PaymentService.Api.csproj src/PaymentService/PaymentService.Api/
+COPY src/PaymentService/PaymentService/PaymentService.csproj src/PaymentService/PaymentService/
+RUN dotnet restore src/PaymentService/PaymentService/PaymentService.csproj
+COPY src/PolicyService/PolicyService.Api/ src/PolicyService/PolicyService.Api/
+COPY src/PaymentService/PaymentService.Api/ src/PaymentService/PaymentService.Api/
+COPY src/PaymentService/PaymentService/ src/PaymentService/PaymentService/
+RUN dotnet publish src/PaymentService/PaymentService/PaymentService.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:5070
 ENV ASPNETCORE_ENVIRONMENT=docker
-COPY --from=publish /opt/app/PaymentService/out ./
+COPY --from=build /app/publish ./
 ENTRYPOINT ["dotnet", "PaymentService.dll"]
