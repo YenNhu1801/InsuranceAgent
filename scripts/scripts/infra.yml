@@ -1,46 +1,42 @@
-version: '3'
-
 services:
-  eureka:
-    build: ../eureka-server
-    image: eureka-server
-    container_name: eureka-server
-    ports:
-      - 8761:8761
-
   postgres:
-    build: ../postgres
-    image: postgres
+    build:
+      context: ../../postgres/postgres
+    image: insurance-postgres
     container_name: postgres
-    volumes:
-      - /tmp/data/postgresql:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     environment:
-      - POSTGRES_PASSWORD=lab_pass
+      POSTGRES_PASSWORD: lab_pass
+    ports:
+      - "5432:5432"
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: rabbit
+    hostname: rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ../../scripts/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.9.2
     container_name: elasticsearch
     environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - xpack.security.enabled=false
-      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
-      - 9200:9200
+      - "9200:9200"
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbit
+  eureka-server:
+    build:
+      context: ../../eureka-server/eureka-server
+    image: eureka-server
+    container_name: eureka-server
     ports:
-      - 15672:15672
-      - 5672:5672
-    labels:
-      NAME: rabbitmq
-    volumes:
-      - ./rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
+      - "8761:8761"

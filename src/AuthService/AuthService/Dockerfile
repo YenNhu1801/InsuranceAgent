@@ -1,21 +1,13 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
-ENV APP_HOME /opt/app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
-
-COPY AuthService/*.csproj $APP_HOME/
-RUN cd $APP_HOME && dotnet restore
-
-COPY AuthService/ $APP_HOME/
-RUN cd $APP_HOME && dotnet build
-
-FROM build AS publish
-WORKDIR $APP_HOME
-RUN cd $APP_HOME && dotnet publish -c Release -o out
+WORKDIR /src
+COPY src/AuthService/AuthService/AuthService.csproj src/AuthService/AuthService/
+RUN dotnet restore src/AuthService/AuthService/AuthService.csproj
+COPY src/AuthService/AuthService/ src/AuthService/AuthService/
+RUN dotnet publish src/AuthService/AuthService/AuthService.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:6060
-COPY --from=publish /opt/app/out ./
+ENV ASPNETCORE_ENVIRONMENT=docker
+COPY --from=build /app/publish ./
 ENTRYPOINT ["dotnet", "AuthService.dll"]

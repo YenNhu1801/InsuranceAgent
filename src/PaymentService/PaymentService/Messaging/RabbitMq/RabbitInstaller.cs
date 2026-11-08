@@ -17,7 +17,7 @@ public static class RabbitInstaller
         bus.Advanced.ExchangeDeclare("lab-dotnet-micro", ExchangeType.Topic);
         services.AddSingleton(bus);
         
-        services.AddSingleton(svc => new RabbitEventListener(svc.GetRequiredService<IBus>(), svc));
+        services.AddSingleton<RabbitEventListener>();
 
         return services;
     }

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Smoke BTH9: login, products, offer, policy, search. Không thanh toán tiền thật.
+set -euo pipefail
+AUTH="${AUTH:-http://localhost:6060}"
+GW="${GW:-http://localhost:8099}"
+
+LOGIN=$(curl -sf -X POST "$AUTH/api/User" -H 'Content-Type: application/json' \
+  -d '{"login":"jimmy.solid","password":"secret"}')
+TOKEN=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["token"])' "$LOGIN")
+echo "LOGIN_OK user=jimmy.solid"
+
+curl -sf -H "Authorization: Bearer $TOKEN" "$GW/api/Products" -o /tmp/bth9-products.json
+python3 -c 'import json; d=json.load(open("/tmp/bth9-products.json")); print("PRODUCTS_OK", [p["code"] for p in d])'
+
+OFFER=$(curl -sf -X POST "$GW/api/Offers" -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+  -d '{"productCode":"TRI","policyFrom":"2026-12-01T00:00:00","policyTo":"2026-12-15T00:00:00","selectedCovers":["C2","C3"],"answers":[{"questionCode":"DESTINATION","questionType":"Choice","answer":"EUR"},{"questionCode":"NUM_OF_ADULTS","questionType":"Numeric","answer":1},{"questionCode":"NUM_OF_CHILDREN","questionType":"Numeric","answer":1}]}')
+echo "OFFER_OK $OFFER"
+ONUM=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["offerNumber"])' "$OFFER")
+
+POLICY=$(curl -sf -X POST "$GW/api/Policies" -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+  -d "{\"offerNumber\":\"$ONUM\",\"policyHolder\":{\"firstName\":\"An\",\"lastName\":\"Nguyen\",\"taxId\":\"001099000111\"},\"policyHolderAddress\":{\"country\":\"VN\",\"zipCode\":\"70000\",\"city\":\"HCM\",\"street\":\"1 Le Loi\"}}")
+echo "POLICY_OK $POLICY"
+PNUM=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["policyNumber"])' "$POLICY")
+
+PAY="${PAY:-http://localhost:5070}"
+PAY_OK=""
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  PBAL=$(curl -sf --max-time 10 "$PAY/api/Payment/accounts/$PNUM" 2>/dev/null || true)
+  if [[ -n "$PBAL" ]] && python3 -c 'import json,sys; json.loads(sys.argv[1])' "$PBAL" 2>/dev/null; then
+    echo "PAYMENT_OK $PBAL"
+    PAY_OK=1
+    break
+  fi
+  sleep 2
+done
+if [[ -z "$PAY_OK" ]]; then
+  echo "PAYMENT_FAIL no account for $PNUM (du lieu lab)" >&2
+  exit 1
+fi
+
+SEARCH_OK=0
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  SEARCH=$(curl -sf -H "Authorization: Bearer $TOKEN" --get "$GW/api/PolicySearch" --data-urlencode "q=Nguyen" 2>/dev/null || true)
+  if [[ -n "$SEARCH" ]] && python3 -c 'import json,sys; d=json.loads(sys.argv[1]); assert sys.argv[2] in [p["policyNumber"] for p in d.get("policies",[])]' "$SEARCH" "$PNUM" 2>/dev/null; then
+    echo "SEARCH_OK $SEARCH"
+    SEARCH_OK=1
+    break
+  fi
+  sleep 2
+done
+if [[ -z "$SEARCH_OK" ]]; then
+  echo "SEARCH_FAIL policy $PNUM chua index (cho ES/Rabbit them thoi gian)" >&2
+  exit 1
+fi
+echo "SMOKE_OK policy=$PNUM"
